@@ -16,13 +16,20 @@ class App {
         xhr.open('POST', '/check');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = (e) => {
-            this.ready(xhr.responseText)            
+            this.ready( JSON.parse( xhr.responseText) ); 
         }
         xhr.send( JSON.stringify(data) );
     }
 
     ready( response ) {
-        console.log(response)
+        const targetNode = document.querySelector('article');
+        if( response.domain ) {
+            targetNode.textContent = 'Domain exists';
+            targetNode.setAttribute('class','err');
+        } else {
+            targetNode.textContent = 'Nope, go buy it!';
+            targetNode.setAttribute('class','ok');
+        }
     }
 }
 

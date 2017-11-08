@@ -4,6 +4,8 @@
  * 2) Backend: validate domain
  * 3)  - find method to test domain existence
  * 4) send it back to client
+ * 5) Add this check on TLD-s: 
+ * http://data.iana.org/TLD/tlds-alpha-by-domain.txt
  */
 const port = 3000;
 const { exec } = require('child_process');
@@ -18,8 +20,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/check', (req, res) => {
-    console.log(req.body)
-    exec('nslookup 444.hu', (err, stdout, stderr) => {
+    let command = 'nslookup ' + req.body.domain;
+    exec( command, (err, stdout, stderr) => {
         const result = {
             domain: errorCheck(stderr)
         }
