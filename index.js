@@ -8,9 +8,9 @@
 
 const { exec } = require('child_process');
 exec('nslookup 444.hu', (err, stdout, stderr) => {
-  if (err) {
-    console.error('Error',err);
-  }
-  console.log('Normal',stdout);
-  console.log('Error',stderr);
+    console.log(errorCheck(stderr));
 });
+
+function errorCheck( errString ) {
+    return ( errString.indexOf('Non-existent domain') == -1 );
+}
