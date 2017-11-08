@@ -10,15 +10,21 @@ const { exec } = require('child_process');
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+app.use('/assets', express.static('./assets'));
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/check', (req, res) => {
+app.post('/check', (req, res) => {
+    console.log(req.body)
     exec('nslookup 444.hu', (err, stdout, stderr) => {
-        console.log(errorCheck(stderr));
+        const result = {
+            domain: errorCheck(stderr)
+        }
+        res.json(result);
     });
-    res.sendFile(__dirname + '/index.html');
 });
 
 function errorCheck( errString ) {
